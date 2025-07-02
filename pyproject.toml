@@ -3,5 +3,13 @@ name = "jira-mcp-server"
 version = "0.1.0"
 description = "MCP Server for the Jira API"
 readme = "README.md"
+authors = [
+    { name = "Juan Carlos Suarez", email = "juancarlos.suarez@selleco.com.co" },
+]
+keywords = ["mcp", "jira", "api"]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "fastmcp>=2.10.1",
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.4",
+]
