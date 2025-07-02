@@ -135,4 +135,7 @@ poetry.toml
 .history
 .ionide
 
+# Local Testing
+sandbox.py
+
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
