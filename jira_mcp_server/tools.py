@@ -120,12 +120,105 @@ def get_priorities() -> dict:
     )
 
 
-def update_issue(issue_key: str, title: str, description: str):
+def get_labels(max_results: int = 50) -> dict:
     """
-    Update an existing Jira issue with the specified parameters.
+    Retrieve all labels available in Jira.
+
+    :param max_results: Maximum number of labels to return.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
     """
-    # TODO
-    return None
+    query_params = {"maxResults": max_results}
+
+    return jira_api_request(
+        method="GET",
+        endpoint="label",
+        params=query_params,
+    )
+
+
+def get_project_issue_types(project_key: str, max_results: int = 50) -> dict:
+    """
+    Retrieve all issue types available for a specific Jira project.
+
+    :param project_key: Key of the Jira project.
+    :param max_results: Maximum number of issue types to return.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    query_params = {"maxResults": max_results}
+
+    return jira_api_request(
+        method="GET",
+        endpoint=f"issue/createmeta/{project_key}/issuetypes",
+        params=query_params,
+    )
+
+
+def get_issue_metadata(
+    project_key: str,
+    issue_type_id: str,
+    max_results: int = 100
+) -> dict:
+    """
+    Retrieve issue creation metadata for a specific project and issue type.
+
+    :param project_key: Key of the Jira project.
+    :param issue_type_id: ID of the issue type.
+    :param max_results: Maximum number of fields to return.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+
+    query_params = {"maxResults": max_results}
+
+    return jira_api_request(
+        method="GET",
+        endpoint=f"issue/createmeta/{project_key}/issuetypes/{issue_type_id}",
+        params=query_params,
+    )
+
+
+def get_current_user() -> dict:
+    """
+    Retrieve information about the currently authenticated Jira user.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return jira_api_request(
+        method="GET",
+        endpoint="myself",
+    )
+
+
+def get_issue_fields() -> dict:
+    """
+    Retrieve all available fields that an issue can contain in the Jira instance.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return jira_api_request(
+        method="GET",
+        endpoint="field",
+    )
+
+
+def get_issue_statuses() -> dict:
+    """
+    Retrieve all issue statuses defined in the Jira instance.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return jira_api_request(
+        method="GET",
+        endpoint="status",
+    )
 
 
 def create_issue(
