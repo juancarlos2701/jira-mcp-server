@@ -157,7 +157,7 @@ def get_project_issue_types(project_key: str, max_results: int = 50) -> dict:
     )
 
 
-def get_issue_metadata(
+def get_issue_metadata(  # TODO: Rename?
     project_key: str,
     issue_type_id: str,
     max_results: int = 100
@@ -231,8 +231,8 @@ def create_issue(
     labels: Optional[list[str]] = None,
     priority_id: Optional[str] = None,
     reporter_id: Optional[str] = None,
-) -> requests.Response:
 ) -> dict:
+    # TODO: Add sprint, which?
     """
     Create a new Jira issue with the specified parameters.
 
@@ -291,3 +291,26 @@ def create_issue(
         headers=headers,
         payload=payload,
     )
+
+
+def update_issue(issue_key: str):
+    """
+    Update an existing Jira issue with the specified parameters.
+    """
+    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
+    return None
+
+
+def delete_issue(issue_key: str):
+    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-delete
+    return None
+
+
+def assign_issue(issue_key: str, user_id: str):
+    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-assignee-put
+    return None
+
+
+def comment_issue(issue_key: str):
+    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/#api-rest-api-3-issue-issueidorkey-comment-post
+    return None
