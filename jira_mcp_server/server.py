@@ -6,6 +6,20 @@ This module provides a FastMCP server for interacting with the Jira API.
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 
+from tools import (
+    get_projects,
+    get_project_users,
+    get_project_issues,
+    get_project_issue_types,
+    get_priorities,
+    get_labels,
+    get_issue_metadata,
+    get_issue_fields,
+    get_issue_statuses,
+    create_issue,
+    get_current_user,
+)
+
 load_dotenv()
 
 mcp = FastMCP(
@@ -18,6 +32,19 @@ mcp = FastMCP(
         You can also use the tools to get information about Jira users.
         You can also use the tools to get information about Jira groups.
     """,
+    tools=[
+        get_projects,
+        get_project_users,
+        get_project_issues,
+        get_project_issue_types,
+        get_priorities,
+        get_labels,
+        get_issue_metadata,
+        get_issue_fields,
+        get_issue_statuses,
+        create_issue,
+        get_current_user,
+    ],
 )
 
 
