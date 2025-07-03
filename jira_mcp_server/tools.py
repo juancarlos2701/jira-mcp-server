@@ -8,7 +8,7 @@ from typing import Optional
 import requests
 from requests.auth import HTTPBasicAuth
 
-JIRA_AUTH = HTTPBasicAuth(os.getenv("JIRA_USER"), str(os.getenv("JIRA_API_KEY")))
+JIRA_AUTH = HTTPBasicAuth(str(os.getenv("JIRA_USER")), str(os.getenv("JIRA_API_KEY")))
 
 
 def jira_api_request(
@@ -28,7 +28,7 @@ def jira_api_request(
     :param payload: Data to send in the body of the request.
     """
 
-    endpoint = urljoin(os.getenv("JIRA_BASE_URL"), endpoint)
+    endpoint = urljoin(str(os.getenv("JIRA_BASE_URL")), endpoint)
 
     headers = headers or {"Accept": "application/json"}
 
