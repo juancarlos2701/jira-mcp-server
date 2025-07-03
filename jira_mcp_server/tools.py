@@ -17,15 +17,19 @@ def jira_api_request(
     headers: Optional[dict] = None,
     params: Optional[dict] = None,
     payload: Optional[dict] = None,
-):
+) -> dict:
     """
     Make a request to the Jira API with the specified method, endpoint, and
     optional parameters or payload.
 
     :param method: HTTP method to use (e.g., 'GET', 'POST').
     :param endpoint: API endpoint to call.
+    :param headers: Optional HTTP headers to include in the request.
     :param params: Query parameters to include in the request.
     :param payload: Data to send in the body of the request.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
     """
 
     endpoint = urljoin(str(os.getenv("JIRA_BASE_URL")), endpoint)
@@ -52,9 +56,12 @@ def jira_api_request(
         }
 
 
-def get_projects():
+def get_projects() -> dict:
     """
     Get all projects from Jira.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
     """
     return jira_api_request(
         method="GET",
@@ -62,11 +69,14 @@ def get_projects():
     )
 
 
-def get_project_users(project_keys: str):
+def get_project_users(project_keys: str) -> dict:
     """
     Get all users associated with a given Jira project.
 
     :param project_key: Key of the Jira project.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
     """
 
     query_params = {"projectKeys": project_keys}
@@ -78,11 +88,14 @@ def get_project_users(project_keys: str):
     )
 
 
-def get_project_issues(project_key: str):
+def get_project_issues(project_key: str) -> dict:
     """
     Get all issues for a given project from Jira.
 
     :param project_key: Key of the Jira project
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
     """
 
     query_params = {"currentProjectId": project_key}
@@ -94,9 +107,12 @@ def get_project_issues(project_key: str):
     )
 
 
-def get_priorities():
+def get_priorities() -> dict:
     """
-    Returns the list of all issue priorities.
+    Returns the list of all usable issue priorities.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
     """
     return jira_api_request(
         method="GET",
@@ -123,6 +139,7 @@ def create_issue(
     priority_id: Optional[str] = None,
     reporter_id: Optional[str] = None,
 ) -> requests.Response:
+) -> dict:
     """
     Create a new Jira issue with the specified parameters.
 
@@ -135,6 +152,9 @@ def create_issue(
     :param labels: List of labels to add to the issue (optional).
     :param priority_id: ID of the priority of the issue (optional).
     :param reporter_id: ID of the reporter of the issue (optional).
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
     """
     payload = {
         "fields": {
