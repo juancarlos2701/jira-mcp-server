@@ -302,12 +302,47 @@ def create_issue(
     )
 
 
-def update_issue(issue_key: str):
+def edit_issue(
+    issue_key: str,
+    value_key: str,
+    value_to_update: object,
+    action: Optional[str] = None,
+) -> dict:
     """
-    Update an existing Jira issue with the specified parameters.
+    Edit a field of a Jira issue with a specified value and action.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param value_key: Field key to update (e.g., 'summary', 'labels').
+    :param value_to_update: Value to set or update for the field.
+    :param action: Action to perform (e.g., 'set', 'add', 'remove'). 
+                   If None, value_to_update is used directly.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
     """
-    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
-    return None
+    headers = {"Accept": "application/json", "Content-Type": "application/json"}
+
+    payload = {
+        "update": {
+            value_key: (
+                [
+                    {
+                        action: value_to_update,
+                    }
+                ]
+                if action
+                else value_to_update
+            )
+        }
+    }
+
+    return jira_api_request(
+        method="PUT",
+        endpoint=f"issue/{issue_key}",
+        headers=headers,
+        payload=payload,
+    )
+
 
 
 def delete_issue(issue_key: str):
