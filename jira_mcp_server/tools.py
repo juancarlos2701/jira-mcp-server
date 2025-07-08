@@ -65,7 +65,7 @@ def jira_api_request(
         }
 
 
-def get_projects() -> dict:
+def get_projects() -> dict:  # TODO: Fix error que en mayoria de los casos returns list[dict] y no solo dict
     """
     Get all projects from Jira.
 
@@ -541,12 +541,44 @@ def update_issue_duedate(issue_key: str, new_duedate: str) -> dict:
     )
 
 
+def change_issue_parent(issue_key: str, parent: str):
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
+
+    # TODO: This returns "Success 204" with different variations however the parent is not set.
+
+    payload = {
+        "update": {
+            "parent": [
+                {
+                    "set": {"key": parent},
+                }
+            ]
+        }
+    }
+
+    return jira_api_request(
+        method="PUT",
+        endpoint=f"issue/{issue_key}",
+        headers=headers,
+        payload=payload,
+    )
+
+
+def link_issues():
+    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-links/#api-rest-api-3-issuelink-post
     return None
 
 
+def get_issue_link_types():
+    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-link-types/#api-rest-api-3-issuelinktype-get
     return None
 
 
+def delete_issues_link():
+    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-links/#api-rest-api-3-issuelink-linkid-delete
     return None
 
 
