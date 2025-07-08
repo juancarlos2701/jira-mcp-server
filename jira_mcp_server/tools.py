@@ -504,8 +504,6 @@ def change_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
         action="set",
     )
 
-def delete_issue(issue_key: str):
-    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-delete
 
 def remove_issue_labels(issue_key: str, labels: list[str]) -> dict:
     """
@@ -546,11 +544,80 @@ def update_issue_duedate(issue_key: str, new_duedate: str) -> dict:
     return None
 
 
-def assign_issue(issue_key: str, user_id: str):
-    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-assignee-put
     return None
 
 
-def comment_issue(issue_key: str):
-    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/#api-rest-api-3-issue-issueidorkey-comment-post
     return None
+
+
+def delete_issue(issue_key: str) -> dict:
+    """
+    Delete a Jira issue by its key.
+
+    :param issue_key: Key of the Jira issue to delete.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return jira_api_request(
+        method="DELETE",
+        endpoint=f"issue/{issue_key}",
+    )
+
+
+def assign_issue(issue_key: str, user: dict) -> dict:
+    """
+    Assign a Jira issue to a user.
+
+    :param issue_key: Key of the Jira issue to assign.
+    :param user: Dictionary containing the user information to assign to the issue.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    headers = {"Accept": "application/json", "Content-Type": "application/json"}
+
+    return jira_api_request(
+        method="PUT",
+        endpoint=f"issue/{issue_key}/assignee",
+        headers=headers,
+        payload=user,
+    )
+
+
+def comment_issue(issue_key: str, comment: str) -> dict:
+    """
+    Add a comment to a Jira issue.
+
+    :param issue_key: Key of the Jira issue to comment on.
+    :param comment: The text of the comment to add.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    headers = {"Accept": "application/json", "Content-Type": "application/json"}
+
+    payload = {
+        "body": {
+            "content": [
+                {
+                    "content": [
+                        {
+                            "text": comment,
+                            "type": "text"
+                        }
+                    ],
+                    "type": "paragraph"
+                }
+            ],
+            "type": "doc",
+            "version": 1,
+        }
+    }
+
+    return jira_api_request(
+        method="POST",
+        endpoint=f"issue/{issue_key}/comment",
+        headers=headers,
+        payload=payload,
+    )
