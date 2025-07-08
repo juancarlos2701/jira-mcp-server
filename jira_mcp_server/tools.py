@@ -47,9 +47,18 @@ def jira_api_request(
     )
 
     if response.ok:
-        return response.json()
+        try:
+            return response.json()
+        except requests.exceptions.JSONDecodeError:
+            return {
+                "successful": response.ok,
+                "status_code": response.status_code,
+                "text": response.text,
+                "reason": response.reason,
+            }
     else:
         return {
+            "successful": response.ok,
             "status_code": response.status_code,
             "text": response.text,
             "reason": response.reason,
