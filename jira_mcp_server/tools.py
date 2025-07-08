@@ -344,9 +344,205 @@ def edit_issue(
     )
 
 
+def change_issue_title(issue_key: str, new_title: str) -> dict:
+    """
+    Change the summary/title of a Jira issue.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param new_title: New summary/title for the issue.
+    
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="summary",
+        value_to_update=new_title,
+        action="set",
+    )
+
+
+def change_issue_description(issue_key: str, new_description: str) -> dict:
+    """
+    Change the description of a Jira issue.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param new_description: New description for the issue.
+    
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    payload = {
+        "content": [
+            {
+                "content": [
+                    {
+                        "text": new_description,
+                        "type": "text",
+                    }
+                ],
+                "type": "paragraph",
+            }
+        ],
+        "type": "doc",
+        "version": 1,
+    }
+
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="description",
+        value_to_update=payload,
+        action="set",
+    )
+
+
+def change_issue_reporter(issue_key: str, user: dict) -> dict:
+    """
+    Change the reporter of a Jira issue.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param user: Dictionary (as returned by get_project_users()) containing the new reporter's 
+                 information. Always get the user's information first from get_project_users().
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="reporter",
+        value_to_update=user,
+        action="set",
+    )
+
+
+def change_issue_priority(issue_key: str, new_priority: dict) -> dict:
+    """
+    Change the priority of a Jira issue.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param new_priority: Dictionary (as returned by get_priorities()) containing the new priority 
+                         information. Always get the available priorities from get_priorities().
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    # TODO: check whether provided priority fits allowed priorities using get_priorities
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="priority",
+        value_to_update=new_priority,
+        action="set",
+    )
+
+
+def change_issue_environment(issue_key: str, new_environment: str) -> dict:
+    """
+    Change the environment field of a Jira issue.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param new_environment: New environment description for the issue.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    payload = {
+        "content": [
+            {
+                "content": [
+                    {
+                        "text": new_environment,
+                        "type": "text",
+                    }
+                ],
+                "type": "paragraph",
+            }
+        ],
+        "type": "doc",
+        "version": 1,
+    }
+
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="environment",
+        value_to_update=payload,
+        action="set",
+    )
+
+
+def add_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
+    """
+    Add one or more labels to a Jira issue.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param new_labels: List of labels to add to the issue.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    labels = [{"add": label} for label in new_labels]
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="labels",
+        value_to_update=labels,
+    )
+
+
+def change_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
+    """
+    Replace all labels of a Jira issue with a new set of labels.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param new_labels: List of new labels to set for the issue.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="labels",
+        value_to_update=new_labels,
+        action="set",
+    )
 
 def delete_issue(issue_key: str):
     # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-delete
+
+def remove_issue_labels(issue_key: str, labels: list[str]) -> dict:
+    """
+    Remove one or more labels from a Jira issue.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param labels: List of labels to remove from the issue.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    labels = [{"remove": label} for label in labels]
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="labels",
+        value_to_update=labels,
+    )
+
+
+def update_issue_duedate(issue_key: str, new_duedate: str) -> dict:
+    """
+    Update the due date of a Jira issue.
+
+    :param issue_key: Key of the Jira issue to update.
+    :param new_duedate: New due date for the issue in 'YYYY-MM-DD' format.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return edit_issue(
+        issue_key=issue_key,
+        value_key="duedate",
+        value_to_update=new_duedate,
+        action="set",
+    )
+
+
     return None
 
 
