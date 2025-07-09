@@ -1,7 +1,7 @@
 """Functions for interacting with Jira issues via the API."""
 
 from typing import Optional
-from .general import jira_api_request
+from .general import jira_api_request, get_priorities
 
 
 def get_issue_creation_metadata(
@@ -225,7 +225,14 @@ def change_issue_priority(issue_key: str, new_priority: dict) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
-    # TODO: check whether provided priority fits allowed priorities using get_priorities
+    if new_priority not in get_priorities():
+        return {
+            "successful": False,
+            "status_code": 406,
+            "text": "Not supported priority. Use get_priorities() to get the allowed priorities.",
+            "reason": "Priority was checked against get_priorities() and it was not part of them.",
+        }
+
     return edit_issue(
         issue_key=issue_key,
         value_key="priority",
