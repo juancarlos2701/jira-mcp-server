@@ -19,7 +19,7 @@ from jira_api_tools.project import (
     get_project_issues,
     get_project_issue_types,
 )
-from jira_mcp_server.jira_api_tools.issue import (
+from jira_api_tools.issue import (
     get_issue_creation_metadata,
     create_issue,
     get_issue,
