@@ -102,6 +102,23 @@ def create_issue(
     )
 
 
+def get_issue(issue_key: str, query_params: Optional[dict] = None) -> dict:
+    """
+    Retrieve a Jira issue by its key, optionally including additional query parameters.
+
+    :param issue_key: The key of the Jira issue to retrieve.
+    :param query_params: Optional dictionary of query parameters to include in the request.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return jira_api_request(
+        method=HTTPMethod.GET,
+        endpoint=f"issue/{issue_key}",
+        params=query_params,
+    )
+
+
 def edit_issue(
     issue_key: str,
     value_key: str,
@@ -371,19 +388,99 @@ def change_issue_parent(issue_key: str, parent: str):
     )
 
 
-def link_issues():
-    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-links/#api-rest-api-3-issuelink-post
-    return None
+def get_issue_link_types() -> dict:
+    """
+    Retrieve all available issue link types from Jira.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return jira_api_request(
+        method=HTTPMethod.GET,
+        endpoint="issueLinkType",
+    )
 
 
-def get_issue_link_types():
-    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-link-types/#api-rest-api-3-issuelinktype-get
-    return None
+def link_issues(
+    link_type: str,
+    action_issue: str,
+    receiver_issue: str,
+    comment_on_action_issue: Optional[str] = None,
+    comment_on_receiver_issue: Optional[str] = None
+) -> dict:
+    """
+    Link two Jira issues with a specified link type and optionally add comments to either issue.
+
+    :param link_type: The type of link to create between the issues (e.g., "Blocks", "Duplicate"). 
+                      Link types can be retrieved using get_issue_link_types().
+    :param action_issue: The key of the issue that will be the inward issue in the link.
+    :param receiver_issue: The key of the issue that will be the outward issue in the link.
+    :param comment_on_action_issue: Optional comment to add to the action (inward) issue.
+    :param comment_on_receiver_issue: Optional comment to add to the receiver (outward) issue.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    headers = {"Accept": "application/json", "Content-Type": "application/json"}
+
+    payload = {
+        "inwardIssue": {
+            "key": action_issue,
+        },
+        "outwardIssue": {
+            "key": receiver_issue,
+        },
+        "type": {
+            "name": link_type,
+        }
+    }
+
+    if comment_on_action_issue:
+        comment_field = {
+            "body": {
+                "content": [
+                    {
+                        "content": [
+                            {
+                                "text": comment_on_action_issue,
+                                "type": "text"
+                            }
+                        ],
+                        "type": "paragraph"
+                    }
+                ],
+                "type": "doc",
+                "version": 1
+            },
+        }
+
+        payload.update({"comment": comment_field})
+
+    if comment_on_receiver_issue:
+        response = comment_issue(issue_key=receiver_issue, comment=comment_on_receiver_issue)
+
+    return jira_api_request(
+        method=HTTPMethod.POST,
+        endpoint="issueLink",
+        headers=headers,
+        payload=payload,
+    )
 
 
-def delete_issues_link():
-    # TODO: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-links/#api-rest-api-3-issuelink-linkid-delete
-    return None
+def delete_issues_link(link_id: str) -> dict:
+    """
+    Delete a link between two Jira issues by its link ID.
+
+    :param link_id: The ID of the issue-link to delete. Issue-links of an issue can be obtained 
+                    using get_issue(issue_key, query_params={"fields": "issuelinks"}).
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    return jira_api_request(
+        method=HTTPMethod.DELETE,
+        endpoint=f"issueLink/{link_id}",
+    )
 
 
 def delete_issue(issue_key: str) -> dict:
