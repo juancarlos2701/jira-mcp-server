@@ -3,21 +3,37 @@ Jira MCP Server module.
 
 This module provides a FastMCP server for interacting with the Jira API.
 """
+
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 
-from tools import (
+from jira_api_tools.general import (
     get_projects,
+    get_priorities,
+    get_labels,
+    get_issue_statuses,
+    get_current_user,
+)
+from jira_api_tools.project import (
     get_project_users,
     get_project_issues,
     get_project_issue_types,
-    get_priorities,
-    get_labels,
+)
+from jira_api_tools.issue import (
     get_issue_metadata,
-    get_issue_fields,
-    get_issue_statuses,
     create_issue,
-    get_current_user,
+    change_issue_title,
+    change_issue_description,
+    change_issue_reporter,
+    change_issue_priority,
+    change_issue_environment,
+    add_issue_labels,
+    change_issue_labels,
+    remove_issue_labels,
+    update_issue_duedate,
+    delete_issue,
+    assign_issue,
+    comment_issue,
 )
 
 load_dotenv()
@@ -34,16 +50,27 @@ mcp = FastMCP(
     """,
     tools=[
         get_projects,
+        get_priorities,
+        get_labels,
+        get_issue_statuses,
+        get_current_user,
         get_project_users,
         get_project_issues,
         get_project_issue_types,
-        get_priorities,
-        get_labels,
         get_issue_metadata,
-        get_issue_fields,
-        get_issue_statuses,
         create_issue,
-        get_current_user,
+        change_issue_title,
+        change_issue_description,
+        change_issue_reporter,
+        change_issue_priority,
+        change_issue_environment,
+        add_issue_labels,
+        change_issue_labels,
+        remove_issue_labels,
+        update_issue_duedate,
+        delete_issue,
+        assign_issue,
+        comment_issue,
     ],
 )
 
