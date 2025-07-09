@@ -1,6 +1,6 @@
 """Functions for interacting with Jira projects via the API."""
 
-from jira_api_tools.general import jira_api_request
+from .general import jira_api_request
 
 
 def get_project_users(project_keys: str) -> dict:

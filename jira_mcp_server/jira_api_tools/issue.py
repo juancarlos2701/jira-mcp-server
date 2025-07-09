@@ -1,7 +1,7 @@
 """Functions for interacting with Jira issues via the API."""
 
 from typing import Optional
-from jira_api_tools.general import jira_api_request
+from .general import jira_api_request
 
 
 def get_issue_metadata(  # TODO: Rename?
