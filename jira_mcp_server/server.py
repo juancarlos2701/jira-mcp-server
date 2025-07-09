@@ -20,7 +20,7 @@ from jira_api_tools.project import (
     get_project_issue_types,
 )
 from jira_api_tools.issue import (
-    get_issue_metadata,
+    get_issue_creation_metadata,
     create_issue,
     change_issue_title,
     change_issue_description,
@@ -57,7 +57,7 @@ mcp = FastMCP(
         get_project_users,
         get_project_issues,
         get_project_issue_types,
-        get_issue_metadata,
+        get_issue_creation_metadata,
         create_issue,
         change_issue_title,
         change_issue_description,

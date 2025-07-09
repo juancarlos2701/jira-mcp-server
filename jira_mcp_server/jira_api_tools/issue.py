@@ -4,7 +4,7 @@ from typing import Optional
 from .general import jira_api_request
 
 
-def get_issue_metadata(  # TODO: Rename?
+def get_issue_creation_metadata(
     project_key: str,
     issue_type_id: str,
     max_results: int = 100
