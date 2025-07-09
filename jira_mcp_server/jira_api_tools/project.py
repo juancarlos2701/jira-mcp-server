@@ -3,7 +3,7 @@
 from .general import jira_api_request
 
 
-def get_project_users(project_keys: str) -> dict:
+def get_project_users(project_keys: str) -> dict | list:
     """
     Get all users associated with a given Jira project.
 

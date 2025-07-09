@@ -15,7 +15,7 @@ def jira_api_request(
     headers: Optional[dict] = None,
     params: Optional[dict] = None,
     payload: Optional[dict] = None,
-) -> dict:
+) -> dict | list:
     """
     Make a request to the Jira API with the specified method, endpoint, and
     optional parameters or payload.
@@ -63,7 +63,7 @@ def jira_api_request(
         }
 
 
-def get_projects() -> dict:  # TODO: Fix error que en mayoria de los casos returns list[dict] y no solo dict
+def get_projects() -> dict | list:
     """
     Get all projects from Jira.
 
@@ -76,7 +76,7 @@ def get_projects() -> dict:  # TODO: Fix error que en mayoria de los casos retur
     )
 
 
-def get_priorities() -> dict:
+def get_priorities() -> dict | list:
     """
     Returns the list of all usable issue priorities.
 
@@ -107,7 +107,7 @@ def get_labels(max_results: int = 50) -> dict:
     )
 
 
-def get_issue_statuses() -> dict:
+def get_issue_statuses() -> dict | list:
     """
     Retrieve all issue statuses defined in the Jira instance.
 
