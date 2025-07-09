@@ -1,5 +1,6 @@
 """Functions for interacting with Jira issues via the API."""
 
+from http import HTTPMethod
 from typing import Optional
 from .general import jira_api_request, get_priorities
 
@@ -23,7 +24,7 @@ def get_issue_creation_metadata(
     query_params = {"maxResults": max_results}
 
     return jira_api_request(
-        method="GET",
+        method=HTTPMethod.GET,
         endpoint=f"issue/createmeta/{project_key}/issuetypes/{issue_type_id}",
         params=query_params,
     )
@@ -94,7 +95,7 @@ def create_issue(
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
     return jira_api_request(
-        method="POST",
+        method=HTTPMethod.POST,
         endpoint="issue",
         headers=headers,
         payload=payload,
@@ -136,7 +137,7 @@ def edit_issue(
     }
 
     return jira_api_request(
-        method="PUT",
+        method=HTTPMethod.PUT,
         endpoint=f"issue/{issue_key}",
         headers=headers,
         payload=payload,
@@ -363,7 +364,7 @@ def change_issue_parent(issue_key: str, parent: str):
     }
 
     return jira_api_request(
-        method="PUT",
+        method=HTTPMethod.PUT,
         endpoint=f"issue/{issue_key}",
         headers=headers,
         payload=payload,
@@ -395,7 +396,7 @@ def delete_issue(issue_key: str) -> dict:
              otherwise a dictionary containing the status code, response text, and reason.
     """
     return jira_api_request(
-        method="DELETE",
+        method=HTTPMethod.DELETE,
         endpoint=f"issue/{issue_key}",
     )
 
@@ -413,7 +414,7 @@ def assign_issue(issue_key: str, user: dict) -> dict:
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
     return jira_api_request(
-        method="PUT",
+        method=HTTPMethod.PUT,
         endpoint=f"issue/{issue_key}/assignee",
         headers=headers,
         payload=user,
@@ -451,7 +452,7 @@ def comment_issue(issue_key: str, comment: str) -> dict:
     }
 
     return jira_api_request(
-        method="POST",
+        method=HTTPMethod.POST,
         endpoint=f"issue/{issue_key}/comment",
         headers=headers,
         payload=payload,

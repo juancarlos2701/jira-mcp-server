@@ -1,6 +1,7 @@
 """General utility functions for interacting with the Jira API."""
 
 import os
+from http import HTTPMethod
 from urllib.parse import urljoin
 from typing import Optional
 import requests
@@ -10,7 +11,7 @@ JIRA_AUTH = HTTPBasicAuth(str(os.getenv("JIRA_USER")), str(os.getenv("JIRA_API_K
 
 
 def jira_api_request(
-    method: str,
+    method: HTTPMethod,
     endpoint: str,
     headers: Optional[dict] = None,
     params: Optional[dict] = None,
@@ -71,7 +72,7 @@ def get_projects() -> dict | list:
              otherwise a dictionary containing the status code, response text, and reason.
     """
     return jira_api_request(
-        method="GET",
+        method=HTTPMethod.GET,
         endpoint="project",
     )
 
@@ -84,7 +85,7 @@ def get_priorities() -> dict | list:
              otherwise a dictionary containing the status code, response text, and reason.
     """
     return jira_api_request(
-        method="GET",
+        method=HTTPMethod.GET,
         endpoint="priority",
     )
 
@@ -101,7 +102,7 @@ def get_labels(max_results: int = 50) -> dict:
     query_params = {"maxResults": max_results}
 
     return jira_api_request(
-        method="GET",
+        method=HTTPMethod.GET,
         endpoint="label",
         params=query_params,
     )
@@ -115,7 +116,7 @@ def get_issue_statuses() -> dict | list:
              otherwise a dictionary containing the status code, response text, and reason.
     """
     return jira_api_request(
-        method="GET",
+        method=HTTPMethod.GET,
         endpoint="status",
     )
 
@@ -128,6 +129,6 @@ def get_current_user() -> dict:
              otherwise a dictionary containing the status code, response text, and reason.
     """
     return jira_api_request(
-        method="GET",
+        method=HTTPMethod.GET,
         endpoint="myself",
     )
