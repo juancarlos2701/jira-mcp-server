@@ -59,6 +59,7 @@ def get_project_issue_types(project_key: str, max_results: int = 50) -> dict:
              otherwise a dictionary containing the status code, response text, and reason.
     """
     logger.info("Getting issue types for project %s", project_key)
+    logger.debug("max_results: %s", max_results)
     query_params = {"maxResults": max_results}
 
     return jira_api_request(

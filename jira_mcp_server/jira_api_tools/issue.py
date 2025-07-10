@@ -64,6 +64,8 @@ def create_issue(
              otherwise a dictionary containing the status code, response text, and reason.
     """
     logger.info("Creating issue in project %s with title '%s'", project_key, title)
+    logger.debug("Issue details: description=%s, issuetype=%s, duedate=%s, assignee_id=%s, labels=%s, priority_id=%s, reporter_id=%s",
+                 description, issuetype, duedate, assignee_id, labels, priority_id, reporter_id)
     payload = {
         "fields": {
             "project": {"key": project_key},
@@ -146,6 +148,8 @@ def edit_issue(
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.debug("Editing issue %s: setting %s with action '%s'", issue_key, value_key, action)
+    logger.debug("Value to update: %s", value_to_update)
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
     payload = {

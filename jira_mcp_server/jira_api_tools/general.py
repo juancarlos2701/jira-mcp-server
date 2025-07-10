@@ -33,6 +33,7 @@ def jira_api_request(
              otherwise a dictionary containing the status code, response text, and reason.
     """
     logger.info("Requesting %s on %s", method, endpoint)
+    logger.debug("Request details: params=%s, payload=%s, headers=%s", params, payload, headers)
     endpoint = urljoin(str(os.getenv("JIRA_BASE_URL")), endpoint)
 
     headers = headers or {"Accept": "application/json"}
@@ -49,6 +50,7 @@ def jira_api_request(
 
     if response.ok:
         logger.info("Request successful with status code %s", response.status_code)
+        logger.debug("Response text: %s", response.text)
         try:
             return response.json()
         except requests.exceptions.JSONDecodeError:
