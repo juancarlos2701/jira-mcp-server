@@ -1,5 +1,6 @@
 """General utility functions for interacting with the Jira API."""
 
+import logging
 import os
 from http import HTTPMethod
 from urllib.parse import urljoin
@@ -8,6 +9,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 JIRA_AUTH = HTTPBasicAuth(str(os.getenv("JIRA_USER")), str(os.getenv("JIRA_API_KEY")))
+logger = logging.getLogger(__name__)
 
 
 def jira_api_request(
@@ -30,7 +32,7 @@ def jira_api_request(
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
-
+    logger.info(f"Requesting {method} on {endpoint}")
     endpoint = urljoin(str(os.getenv("JIRA_BASE_URL")), endpoint)
 
     headers = headers or {"Accept": "application/json"}
@@ -46,9 +48,11 @@ def jira_api_request(
     )
 
     if response.ok:
+        logger.info(f"Request successful with status code {response.status_code}")
         try:
             return response.json()
         except requests.exceptions.JSONDecodeError:
+            logger.warning("Failed to decode JSON from response")
             return {
                 "successful": response.ok,
                 "status_code": response.status_code,
@@ -56,6 +60,7 @@ def jira_api_request(
                 "reason": response.reason,
             }
     else:
+        logger.error(f"Request failed with status code {response.status_code}: {response.text}")
         return {
             "successful": response.ok,
             "status_code": response.status_code,
@@ -71,6 +76,7 @@ def get_projects() -> dict | list:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info("Getting all projects")
     return jira_api_request(
         method=HTTPMethod.GET,
         endpoint="project",
@@ -84,6 +90,7 @@ def get_priorities() -> dict | list:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info("Getting all priorities")
     return jira_api_request(
         method=HTTPMethod.GET,
         endpoint="priority",
@@ -99,6 +106,7 @@ def get_labels(max_results: int = 50) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Getting labels with max_results={max_results}")
     query_params = {"maxResults": max_results}
 
     return jira_api_request(
@@ -115,6 +123,7 @@ def get_issue_statuses() -> dict | list:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info("Getting all issue statuses")
     return jira_api_request(
         method=HTTPMethod.GET,
         endpoint="status",
@@ -128,6 +137,7 @@ def get_current_user() -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info("Getting current user")
     return jira_api_request(
         method=HTTPMethod.GET,
         endpoint="myself",

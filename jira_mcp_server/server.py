@@ -7,6 +7,8 @@ This module provides a FastMCP server for interacting with the Jira API.
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 
+from config.logging import setup_logging
+
 from jira_api_tools.general import (
     get_projects,
     get_priorities,
@@ -41,6 +43,7 @@ from jira_api_tools.issue import (
 )
 
 load_dotenv()
+setup_logging()
 
 mcp = FastMCP(
     name="Jira API - MCP Server",

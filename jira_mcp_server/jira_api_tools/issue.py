@@ -1,8 +1,11 @@
 """Functions for interacting with Jira issues via the API."""
 
+import logging
 from http import HTTPMethod
 from typing import Optional
 from .general import jira_api_request, get_priorities
+
+logger = logging.getLogger(__name__)
 
 
 def get_issue_creation_metadata(
@@ -20,7 +23,7 @@ def get_issue_creation_metadata(
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
-
+    logger.info(f"Getting issue creation metadata for project {project_key} and issue type {issue_type_id}")
     query_params = {"maxResults": max_results}
 
     return jira_api_request(
@@ -58,6 +61,7 @@ def create_issue(
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Creating issue in project {project_key} with title '{title}'")
     payload = {
         "fields": {
             "project": {"key": project_key},
@@ -112,6 +116,7 @@ def get_issue(issue_key: str, query_params: Optional[dict] = None) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Getting issue {issue_key}")
     return jira_api_request(
         method=HTTPMethod.GET,
         endpoint=f"issue/{issue_key}",
@@ -171,6 +176,7 @@ def change_issue_title(issue_key: str, new_title: str) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Changing title of issue {issue_key} to '{new_title}'")
     return edit_issue(
         issue_key=issue_key,
         value_key="summary",
@@ -189,6 +195,7 @@ def change_issue_description(issue_key: str, new_description: str) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Changing description of issue {issue_key}")
     payload = {
         "content": [
             {
@@ -224,6 +231,7 @@ def change_issue_reporter(issue_key: str, user: dict) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Changing reporter of issue {issue_key} to {user['displayName']}")
     return edit_issue(
         issue_key=issue_key,
         value_key="reporter",
@@ -243,7 +251,9 @@ def change_issue_priority(issue_key: str, new_priority: dict) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Changing priority of issue {issue_key} to {new_priority['name']}")
     if new_priority not in get_priorities():
+        logger.warning(f"Priority {new_priority['name']} not in allowed priorities")
         return {
             "successful": False,
             "status_code": 406,
@@ -269,6 +279,7 @@ def change_issue_environment(issue_key: str, new_environment: str) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Changing environment of issue {issue_key}")
     payload = {
         "content": [
             {
@@ -303,6 +314,7 @@ def add_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Adding labels {new_labels} to issue {issue_key}")
     labels = [{"add": label} for label in new_labels]
     return edit_issue(
         issue_key=issue_key,
@@ -321,6 +333,7 @@ def change_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Changing labels of issue {issue_key} to {new_labels}")
     return edit_issue(
         issue_key=issue_key,
         value_key="labels",
@@ -339,6 +352,7 @@ def remove_issue_labels(issue_key: str, labels: list[str]) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Removing labels {labels} from issue {issue_key}")
     labels = [{"remove": label} for label in labels]
     return edit_issue(
         issue_key=issue_key,
@@ -357,6 +371,7 @@ def update_issue_duedate(issue_key: str, new_duedate: str) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Updating due date of issue {issue_key} to {new_duedate}")
     return edit_issue(
         issue_key=issue_key,
         value_key="duedate",
@@ -366,6 +381,7 @@ def update_issue_duedate(issue_key: str, new_duedate: str) -> dict:
 
 
 def change_issue_parent(issue_key: str, parent: str):
+    logger.warning("change_issue_parent is not implemented yet")
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
     # TODO: This returns "Success 204" with different variations however the parent is not set.
@@ -395,6 +411,7 @@ def get_issue_link_types() -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info("Getting all issue link types")
     return jira_api_request(
         method=HTTPMethod.GET,
         endpoint="issueLinkType",
@@ -421,6 +438,7 @@ def link_issues(
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Linking issue {action_issue} and {receiver_issue} with link type {link_type}")
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
     payload = {
@@ -436,6 +454,7 @@ def link_issues(
     }
 
     if comment_on_action_issue:
+        logger.info(f"Adding comment to action issue {action_issue}")
         comment_field = {
             "body": {
                 "content": [
@@ -457,6 +476,7 @@ def link_issues(
         payload.update({"comment": comment_field})
 
     if comment_on_receiver_issue:
+        logger.info(f"Adding comment to receiver issue {receiver_issue}")
         response = comment_issue(issue_key=receiver_issue, comment=comment_on_receiver_issue)
 
     return jira_api_request(
@@ -477,6 +497,7 @@ def delete_issues_link(link_id: str) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Deleting issue link {link_id}")
     return jira_api_request(
         method=HTTPMethod.DELETE,
         endpoint=f"issueLink/{link_id}",
@@ -492,6 +513,7 @@ def delete_issue(issue_key: str) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Deleting issue {issue_key}")
     return jira_api_request(
         method=HTTPMethod.DELETE,
         endpoint=f"issue/{issue_key}",
@@ -508,6 +530,7 @@ def assign_issue(issue_key: str, user: dict) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Assigning issue {issue_key} to {user['displayName']}")
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
     return jira_api_request(
@@ -528,6 +551,7 @@ def comment_issue(issue_key: str, comment: str) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
+    logger.info(f"Adding comment to issue {issue_key}")
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
     payload = {
