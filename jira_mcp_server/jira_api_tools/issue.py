@@ -15,6 +15,7 @@ def get_issue_creation_metadata(
 ) -> dict:
     """
     Retrieve issue creation metadata for a specific project and issue type.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-createmeta-projectidorkey-issuetypes-issuetypeid-get
 
     :param project_key: Key of the Jira project.
     :param issue_type_id: ID of the issue type.
@@ -47,6 +48,7 @@ def create_issue(
     # TODO: Add sprint, which?
     """
     Create a new Jira issue with the specified parameters.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post
 
     :param project_key: Key of the Jira project.
     :param title: Summary/title of the issue.
@@ -109,6 +111,7 @@ def create_issue(
 def get_issue(issue_key: str, query_params: Optional[dict] = None) -> dict:
     """
     Retrieve a Jira issue by its key, optionally including additional query parameters.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get
 
     :param issue_key: The key of the Jira issue to retrieve.
     :param query_params: Optional dictionary of query parameters to include in the request.
@@ -132,6 +135,7 @@ def edit_issue(
 ) -> dict:
     """
     Edit a field of a Jira issue with a specified value and action.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param value_key: Field key to update (e.g., 'summary', 'labels').
@@ -169,6 +173,7 @@ def edit_issue(
 def change_issue_title(issue_key: str, new_title: str) -> dict:
     """
     Change the summary/title of a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param new_title: New summary/title for the issue.
@@ -188,6 +193,7 @@ def change_issue_title(issue_key: str, new_title: str) -> dict:
 def change_issue_description(issue_key: str, new_description: str) -> dict:
     """
     Change the description of a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param new_description: New description for the issue.
@@ -223,6 +229,7 @@ def change_issue_description(issue_key: str, new_description: str) -> dict:
 def change_issue_reporter(issue_key: str, user: dict) -> dict:
     """
     Change the reporter of a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param user: Dictionary (as returned by get_project_users()) containing the new reporter's
@@ -243,6 +250,7 @@ def change_issue_reporter(issue_key: str, user: dict) -> dict:
 def change_issue_priority(issue_key: str, new_priority: dict) -> dict:
     """
     Change the priority of a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param new_priority: Dictionary (as returned by get_priorities()) containing the new priority
@@ -272,6 +280,7 @@ def change_issue_priority(issue_key: str, new_priority: dict) -> dict:
 def change_issue_environment(issue_key: str, new_environment: str) -> dict:
     """
     Change the environment field of a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param new_environment: New environment description for the issue.
@@ -307,6 +316,7 @@ def change_issue_environment(issue_key: str, new_environment: str) -> dict:
 def add_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
     """
     Add one or more labels to a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param new_labels: List of labels to add to the issue.
@@ -326,6 +336,7 @@ def add_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
 def change_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
     """
     Replace all labels of a Jira issue with a new set of labels.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param new_labels: List of new labels to set for the issue.
@@ -345,6 +356,7 @@ def change_issue_labels(issue_key: str, new_labels: list[str]) -> dict:
 def remove_issue_labels(issue_key: str, labels: list[str]) -> dict:
     """
     Remove one or more labels from a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param labels: List of labels to remove from the issue.
@@ -364,6 +376,7 @@ def remove_issue_labels(issue_key: str, labels: list[str]) -> dict:
 def update_issue_duedate(issue_key: str, new_duedate: str) -> dict:
     """
     Update the due date of a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-put
 
     :param issue_key: Key of the Jira issue to update.
     :param new_duedate: New due date for the issue in 'YYYY-MM-DD' format.
@@ -407,6 +420,7 @@ def change_issue_parent(issue_key: str, parent: str):
 def get_issue_link_types() -> dict:
     """
     Retrieve all available issue link types from Jira.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-link-types/#api-rest-api-3-issuelinktype-get
 
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
@@ -427,6 +441,7 @@ def link_issues(
 ) -> dict:
     """
     Link two Jira issues with a specified link type and optionally add comments to either issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-link-types/#api-rest-api-3-issuelinktype-post
 
     :param link_type: The type of link to create between the issues (e.g., "Blocks", "Duplicate"). 
                       Link types can be retrieved using get_issue_link_types().
@@ -490,6 +505,7 @@ def link_issues(
 def delete_issues_link(link_id: str) -> dict:
     """
     Delete a link between two Jira issues by its link ID.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-link-types/#api-rest-api-3-issuelinktype-issuelinktypeid-delete
 
     :param link_id: The ID of the issue-link to delete. Issue-links of an issue can be obtained 
                     using get_issue(issue_key, query_params={"fields": "issuelinks"}).
@@ -507,6 +523,7 @@ def delete_issues_link(link_id: str) -> dict:
 def delete_issue(issue_key: str) -> dict:
     """
     Delete a Jira issue by its key.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-delete
 
     :param issue_key: Key of the Jira issue to delete.
 
@@ -523,6 +540,7 @@ def delete_issue(issue_key: str) -> dict:
 def assign_issue(issue_key: str, user: dict) -> dict:
     """
     Assign a Jira issue to a user.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-assignee-put
 
     :param issue_key: Key of the Jira issue to assign.
     :param user: Dictionary containing the user information to assign to the issue.
@@ -544,6 +562,7 @@ def assign_issue(issue_key: str, user: dict) -> dict:
 def comment_issue(issue_key: str, comment: str) -> dict:
     """
     Add a comment to a Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/#api-rest-api-3-issue-issueidorkey-comment-post
 
     :param issue_key: Key of the Jira issue to comment on.
     :param comment: The text of the comment to add.

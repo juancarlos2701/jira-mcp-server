@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 def get_project_users(project_keys: str) -> dict | list:
     """
     Get all users associated with a given Jira project.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-user-search/#api-rest-api-3-user-assignable-multiprojectsearch-get
 
     :param project_key: Key of the Jira project.
 
@@ -29,6 +30,7 @@ def get_project_users(project_keys: str) -> dict | list:
 def get_project_issues(project_key: str) -> dict:
     """
     Get all issues for a given project from Jira.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-issue-picker-get
 
     :param project_key: Key of the Jira project
 
@@ -48,6 +50,7 @@ def get_project_issues(project_key: str) -> dict:
 def get_project_issue_types(project_key: str, max_results: int = 50) -> dict:
     """
     Retrieve all issue types available for a specific Jira project.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-createmeta-projectidorkey-issuetypes-get
 
     :param project_key: Key of the Jira project.
     :param max_results: Maximum number of issue types to return.

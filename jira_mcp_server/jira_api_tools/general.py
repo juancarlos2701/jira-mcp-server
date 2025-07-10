@@ -72,6 +72,7 @@ def jira_api_request(
 def get_projects() -> dict | list:
     """
     Get all projects from Jira.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-get
 
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
@@ -86,6 +87,7 @@ def get_projects() -> dict | list:
 def get_priorities() -> dict | list:
     """
     Returns the list of all usable issue priorities.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-priorities/#api-rest-api-3-priority-get
 
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
@@ -100,6 +102,7 @@ def get_priorities() -> dict | list:
 def get_labels(max_results: int = 50) -> dict:
     """
     Retrieve all labels available in Jira.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-labels/#api-rest-api-3-label-get
 
     :param max_results: Maximum number of labels to return.
 
@@ -119,6 +122,7 @@ def get_labels(max_results: int = 50) -> dict:
 def get_issue_statuses() -> dict | list:
     """
     Retrieve all issue statuses defined in the Jira instance.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflow-statuses/#api-rest-api-3-status-get
 
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
@@ -133,6 +137,7 @@ def get_issue_statuses() -> dict | list:
 def get_current_user() -> dict:
     """
     Retrieve information about the currently authenticated Jira user.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-myself/#api-rest-api-3-myself-get
 
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
