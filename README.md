@@ -73,10 +73,27 @@ JIRA_BASE_URL=https://your-jira-instance.atlassian.net/rest/api/3/
 JIRA_USER=your-jira-username
 JIRA_API_KEY=your-jira-api-key
 REQUESTS_TIMEOUT=30
+
+# Logging configuration
+# LOG_LEVEL can be DEBUG, INFO, WARNING, ERROR, CRITICAL
+LOG_LEVEL=INFO
+# LOG_FILE is the name of the log file. If provided, logs will be written to /app/logs/<LOG_FILE> inside the container.
+# If not provided, logs will be sent to stderr.
+# LOG_FILE=jira_mcp_server.log
 ```
 
 Then, you can run the mcp-server using the default `stdio` transport with the following command:
 
 ```bash
 docker run --rm -i --env-file path/to/.env jira-mcp-server
+```
+
+To enable file logging and persist logs outside the container, you need to:
+1.  Uncomment and set `LOG_FILE` in your `.env` file (e.g., `LOG_FILE=jira_mcp_server.log`).
+2.  Mount a local volume to the `/app/logs` directory inside the container.
+
+For example, to store logs in a local folder named `my_local_logs_folder`:
+
+```bash
+docker run --rm -i --env-file path/to/.env -v my_local_logs_folder:/app/logs jira-mcp-server
 ```
