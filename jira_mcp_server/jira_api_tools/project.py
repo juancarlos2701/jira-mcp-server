@@ -16,7 +16,7 @@ def get_project_users(project_keys: str) -> dict | list:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
-    logger.info(f"Getting users for project {project_keys}")
+    logger.info("Getting users for project %s", project_keys)
     query_params = {"projectKeys": project_keys}
 
     return jira_api_request(
@@ -35,7 +35,7 @@ def get_project_issues(project_key: str) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
-    logger.info(f"Getting issues for project {project_key}")
+    logger.info("Getting issues for project %s", project_key)
     query_params = {"currentProjectId": project_key}
 
     return jira_api_request(
@@ -55,7 +55,7 @@ def get_project_issue_types(project_key: str, max_results: int = 50) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
-    logger.info(f"Getting issue types for project {project_key}")
+    logger.info("Getting issue types for project %s", project_key)
     query_params = {"maxResults": max_results}
 
     return jira_api_request(

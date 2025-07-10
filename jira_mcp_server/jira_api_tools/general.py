@@ -32,7 +32,7 @@ def jira_api_request(
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
-    logger.info(f"Requesting {method} on {endpoint}")
+    logger.info("Requesting %s on %s", method, endpoint)
     endpoint = urljoin(str(os.getenv("JIRA_BASE_URL")), endpoint)
 
     headers = headers or {"Accept": "application/json"}
@@ -48,7 +48,7 @@ def jira_api_request(
     )
 
     if response.ok:
-        logger.info(f"Request successful with status code {response.status_code}")
+        logger.info("Request successful with status code %s", response.status_code)
         try:
             return response.json()
         except requests.exceptions.JSONDecodeError:
@@ -60,7 +60,7 @@ def jira_api_request(
                 "reason": response.reason,
             }
     else:
-        logger.error(f"Request failed with status code {response.status_code}: {response.text}")
+        logger.error("Request failed with status code %s: %s", response.status_code, response.text)
         return {
             "successful": response.ok,
             "status_code": response.status_code,
@@ -106,7 +106,7 @@ def get_labels(max_results: int = 50) -> dict:
     :return: The JSON-decoded response from the Jira API if the request is successful,
              otherwise a dictionary containing the status code, response text, and reason.
     """
-    logger.info(f"Getting labels with max_results={max_results}")
+    logger.info("Getting labels with max_results=%s", max_results)
     query_params = {"maxResults": max_results}
 
     return jira_api_request(
