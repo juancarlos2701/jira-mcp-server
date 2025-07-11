@@ -22,24 +22,27 @@ The server exposes the following tools:
 
 ### Issue Tools
 
-*   `get_issue_creation_metadata`: Retrieve issue creation metadata for a specific project and issue type.
-*   `create_issue`: Create a new Jira issue.
-*   `get_issue`: Get details for a specific issue.
-*   `change_issue_title`: Change the summary/title of a Jira issue.
-*   `change_issue_description`: Change the description of a Jira issue.
-*   `change_issue_reporter`: Change the reporter of a Jira issue.
-*   `change_issue_priority`: Change the priority of a Jira issue.
-*   `change_issue_environment`: Change the environment field of a Jira issue.
 *   `add_issue_labels`: Add one or more labels to a Jira issue.
-*   `change_issue_labels`: Replace all labels of a Jira issue with a new set of labels.
-*   `remove_issue_labels`: Remove one or more labels from a Jira issue.
-*   `update_issue_duedate`: Update the due date of a Jira issue.
-*   `get_issue_link_types`: Returns the list of all available issue link types
-*   `link_issues`: Link two issues together.
-*   `delete_issues_link`: Delete a link between two issues.
-*   `delete_issue`: Delete a Jira issue.
 *   `assign_issue`: Assign a Jira issue to a user.
+*   `change_issue_description`: Change the description of a Jira issue.
+*   `change_issue_environment`: Change the environment field of a Jira issue.
+*   `change_issue_labels`: Replace all labels of a Jira issue with a new set of labels.
+*   `change_issue_parent`: Change the parent of a Jira issue.
+*   `change_issue_priority`: Change the priority of a Jira issue.
+*   `change_issue_reporter`: Change the reporter of a Jira issue.
+*   `change_issue_title`: Change the summary/title of a Jira issue.
 *   `comment_issue`: Add a comment to a Jira issue.
+*   `create_issue`: Create a new Jira issue.
+*   `delete_issue`: Delete a Jira issue.
+*   `delete_issues_link`: Delete a link between two issues.
+*   `get_available_transitions`: Retrieve all available transitions for a given Jira issue.
+*   `get_issue`: Get details for a specific issue.
+*   `get_issue_creation_metadata`: Retrieve issue creation metadata for a specific project and issue type.
+*   `get_issue_link_types`: Returns the list of all available issue link types.
+*   `link_issues`: Link two issues together.
+*   `remove_issue_labels`: Remove one or more labels from a Jira issue.
+*   `transition_issue`: Transitions a Jira issue to a new status.
+*   `update_issue_duedate`: Update the due date of a Jira issue.
 
 ## Docker
 

@@ -1,16 +1,18 @@
 jira-mcp-server/
-├───.env
+├───.env.example
 ├───.gitignore
 ├───.python-version
 ├───Dockerfile
 ├───project_structure.txt
 ├───pyproject.toml
 ├───README.md
-├───sandbox.py
 ├───uv.lock
 └───jira_mcp_server/
     ├───__init__.py
     ├───server.py
+    ├───config/
+    │   ├───__init__.py
+    │   └───logging.py
     └───jira_api_tools/
         ├───__init__.py
         ├───general.py
