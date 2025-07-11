@@ -13,7 +13,6 @@ from jira_api_tools.general import (
     get_projects,
     get_priorities,
     get_labels,
-    get_issue_statuses,
     get_current_user,
 )
 from jira_api_tools.project import (
@@ -59,7 +58,6 @@ mcp = FastMCP(
         get_projects,
         get_priorities,
         get_labels,
-        get_issue_statuses,
         get_current_user,
         get_project_users,
         get_project_issues,
