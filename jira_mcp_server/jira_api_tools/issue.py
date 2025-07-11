@@ -601,3 +601,54 @@ def comment_issue(issue_key: str, comment: str) -> dict:
         headers=headers,
         payload=payload,
     )
+
+
+def get_available_transitions(issue_key: str) -> dict:
+    """
+    Retrieve all available transitions for a given Jira issue.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-transitions-get
+
+    :param issue_key: Key of the Jira issue to get available transitions for.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    logger.info("Getting available transitions for issue %s", issue_key)
+    return jira_api_request(
+        method=HTTPMethod.GET,
+        endpoint=f"issue/{issue_key}/transitions"
+    )
+
+
+def transition_issue(issue_key: str, transition_id: str, comment: Optional[str] = None) -> dict:
+    """
+    Transitions a Jira issue to a new status using a transition ID (to get available transitions 
+    use get_available_transitions()), optionally adding a comment.
+    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-transitions-post
+
+    :param issue_key: Key of the Jira issue to transition.
+    :param transition_id: ID of the transition to perform.
+    :param comment: Optional comment to add during the transition.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    logger.info("Transitioning issue %s with transition_id %s", issue_key, transition_id)
+    headers = {"Accept": "application/json", "Content-Type": "application/json"}
+    
+    payload = {
+        "transition": {
+            "id": transition_id
+        },
+    }
+
+    if comment:
+        logger.info("Adding comment to issue %s during transition", issue_key)
+        response = comment_issue(issue_key=issue_key, comment=comment)
+
+    return jira_api_request(
+        method=HTTPMethod.POST,
+        endpoint=f"issue/{issue_key}/transitions",
+        headers=headers,
+        payload=payload,
+    )

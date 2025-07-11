@@ -121,21 +121,6 @@ def get_labels(max_results: int = 50) -> dict:
     )
 
 
-def get_issue_statuses() -> dict | list:
-    """
-    Retrieve all issue statuses defined in the Jira instance.
-    :API Docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflow-statuses/#api-rest-api-3-status-get
-
-    :return: The JSON-decoded response from the Jira API if the request is successful,
-             otherwise a dictionary containing the status code, response text, and reason.
-    """
-    logger.info("Getting all issue statuses")
-    return jira_api_request(
-        method=HTTPMethod.GET,
-        endpoint="status",
-    )
-
-
 def get_current_user() -> dict:
     """
     Retrieve information about the currently authenticated Jira user.
