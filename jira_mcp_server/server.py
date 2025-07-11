@@ -29,6 +29,7 @@ from jira_api_tools.issue import (
     change_issue_reporter,
     change_issue_priority,
     change_issue_environment,
+    change_issue_parent,
     add_issue_labels,
     change_issue_labels,
     remove_issue_labels,
@@ -39,6 +40,8 @@ from jira_api_tools.issue import (
     delete_issue,
     assign_issue,
     comment_issue,
+    get_available_transitions,
+    transition_issue,
 )
 
 load_dotenv()
@@ -70,6 +73,7 @@ mcp = FastMCP(
         change_issue_reporter,
         change_issue_priority,
         change_issue_environment,
+        change_issue_parent,
         add_issue_labels,
         change_issue_labels,
         remove_issue_labels,
@@ -80,6 +84,8 @@ mcp = FastMCP(
         delete_issue,
         assign_issue,
         comment_issue,
+        get_available_transitions,
+        transition_issue,
     ],
 )
 
