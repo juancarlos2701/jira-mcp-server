@@ -397,19 +397,24 @@ def update_issue_duedate(issue_key: str, new_duedate: str) -> dict:
     )
 
 
-def change_issue_parent(issue_key: str, parent: str):
-    logger.warning("change_issue_parent is not implemented yet")
+def change_issue_parent(issue_key: str, parent_key: str) -> dict:
+    """
+    Change the parent of a Jira issue (e.g., move a sub-task to a different parent issue).
+    Consider there is a hierarchy, e.g. issue-type "epic" can be parent of issue-type "task"
+    but issue-type cannot be parent of issue-type "task"
+
+    :param issue_key: Key of the Jira issue to update.
+    :param parent_key: Key of the new parent issue.
+
+    :return: The JSON-decoded response from the Jira API if the request is successful,
+             otherwise a dictionary containing the status code, response text, and reason.
+    """
+    logger.info("Changing parent of issue %s to %s", issue_key, parent_key)
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
-    # TODO: This returns "Success 204" with different variations however the parent is not set.
-
     payload = {
-        "update": {
-            "parent": [
-                {
-                    "set": {"key": parent},
-                }
-            ]
+        "fields": {
+            "parent": {"key": parent_key},
         }
     }
 
