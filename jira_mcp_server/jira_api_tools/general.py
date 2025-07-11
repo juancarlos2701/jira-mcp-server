@@ -62,7 +62,7 @@ def jira_api_request(
                 "reason": response.reason,
             }
     else:
-        logger.error("Request failed with status code %s: %s", response.status_code, response.text)
+        logger.error("Request failed with status code %s: %s - Reason: %s", response.status_code, response.text, response.reason)
         return {
             "successful": response.ok,
             "status_code": response.status_code,
